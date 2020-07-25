@@ -94,7 +94,7 @@ analytics:
 # Site Author
 author:
   name             : "jh"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "https://avatars0.githubusercontent.com/u/41279031"
   bio              : "Fall Forward"
   location         : "South. Korea"
   email            : doum1004@gmail.com
