@@ -106,10 +106,11 @@ let galleryItems = [
 var len = 2;//How long you want to wait.
 var pics=[];
 for(var i=0;i<len;i++){
+  var path = './../images/'+i+'.jpg';
   galleryItems.push({
     "id": i,
-    "url": './images/'+i+'.jpg',
-    "thumb": './images/'+i+'.jpg'
+    "url": path,
+    "thumb": path
   });
 }
 
