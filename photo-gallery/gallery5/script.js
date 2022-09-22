@@ -32,3 +32,37 @@ $(function () {
     }, 1500);
   }
 });
+
+
+function updateGallery() {
+	var stack = $('.stack');
+	stack.empty();
+	$.each(galleryItems,function(index,item){
+	  let imagewrap = document.createElement('div');
+    imagewrap.classList.add("imagewrap");
+	  stack.append(imagewrap);
+
+	  var img = document.createElement('img');
+	  img.src = item.url;
+    img.classList.add("confirmed");
+	  imagewrap.appendChild(img);
+	});
+  }
+  
+  function loadGallery(){
+    var len = 10;//How long you want to load.
+    var pics = [];
+    for(var i=0;i<=len;i++){
+      var src = './../images/src/'+i+'.jpg';
+      var thumb = './../images/thumb/'+i+'.jpg';
+      pics.push({
+        "id": i,
+        "url": src,
+        "thumb": thumb
+      });
+    }
+    return pics;
+  }
+  
+  let galleryItems = loadGallery();
+  updateGallery(); // once on load

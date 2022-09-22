@@ -35,3 +35,30 @@ function debounce( fn, threshold ) {
 $(window).bind("load", function() {
   $('#all').click();
 });
+
+
+function updateGallery() {
+  $('section').empty();
+  $.each(galleryItems,function(index,item){
+    console.log(item);
+    $('section').append('<article><img src="'+item.thumb+'" class="img-responsive"/></article>');
+  });
+}
+
+function loadGallery(){
+  var len = 10;//How long you want to load.
+  var pics = [];
+  for(var i=0;i<=len;i++){
+    var src = './../images/src/'+i+'.jpg';
+    var thumb = './../images/thumb/'+i+'.jpg';
+    pics.push({
+      "id": i,
+      "url": src,
+      "thumb": thumb
+    });
+  }
+  return pics;
+}
+
+let galleryItems = loadGallery();
+updateGallery(); // once on load

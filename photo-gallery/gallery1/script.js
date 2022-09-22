@@ -1,13 +1,5 @@
 let switching = false;
 
-function updateGallery() {
-  $('.gallery__core img, .gallery__bg img').attr('src',galleryItems[0].url);
-  $('.gallery__track').empty();
-  $.each(galleryItems,function(index,item){
-    $('.gallery__track').append('<div class="gallery__track__item '+(index==0 ? 'active' : '')+'"><img src="'+item.thumb+'" data-full="'+item.url+'" alt=""></div>');
-  });
-}
-
 function getNewImages() {
   $.get('https://api.unsplash.com/search/photos?client_id=j0z73f4p5WNBe2OK28CHq-GY9kN2GxPj2DpS_bV6nFs&page=1&per_page=9&orientation=squarish&query='+$('.gallery__search input').val(),function(data){
     let items = [];
@@ -55,21 +47,6 @@ $('.gallery__track').on('click','.gallery__track__item',function(){
   }
 });
 
-let galleryItems = [];
-
-var len = 2;//How long you want to wait.
-var pics=[];
-for(var i=0;i<len;i++){
-  var path = './../images/'+i+'.jpg';
-  galleryItems.push({
-    "id": i,
-    "url": path,
-    "thumb": path
-  });
-}
-
-updateGallery(); // once on load
-
 function debounce(func, timeout = 300){
   let timer;
   return (...args) => {
@@ -77,3 +54,51 @@ function debounce(func, timeout = 300){
     timer = setTimeout(() => { func.apply(this, args); }, timeout);
   };
 }
+
+function updateGallery() {
+  $('.gallery__core img, .gallery__bg img').attr('src',galleryItems[0].url);
+  var tracks = $('.gallery__track');
+  tracks.empty();
+  $.each(galleryItems,function(index,item){
+    let div = document.createElement('div');
+    div.classList.add('gallery__track__item');
+    if (index == 0)
+      div.classList.add('active');
+
+    var img = document.createElement('img');
+    img.src = item.thumb;
+    img.setAttribute('data-full', item.url);
+    div.appendChild(img);
+
+    tracks.append(div);
+
+    //tracks.append('<div class="gallery__track__item '+(index==0 ? 'active' : '')+'"><img src="'+item.thumb+'" data-full="'+item.url+'" alt=""></div>');
+  });
+}
+
+function loadGallery(){
+  var len = 10;//How long you want to load.
+  var pics = [];
+  for(var i=0;i<=len;i++){
+    var src = './../images/src/'+i+'.jpg';
+    var thumb = './../images/thumb/'+i+'.jpg';
+    pics.push({
+      "id": i,
+      "url": src,
+      "thumb": thumb
+    });
+  }
+  return pics;
+}
+
+let galleryItems = loadGallery();
+updateGallery(); // once on load
+
+// const para = document.createElement("article");
+// const img = document.createElement("img");
+// const node = document.createTextNode("This is new.");
+// para.appendChild(img);
+// para.appendChild(node);
+
+// const element = document.getElementById("grid-container");
+// element.appendChild(para);
