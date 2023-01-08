@@ -1,19 +1,47 @@
-let switching = false;
+$( function() {
+  var $grid = $('.grid').isotope({
+    itemSelector: 'article'
+  });
+
+  // filter buttons
+  $('.filters-button-group').on( 'click', 'button', function() {
+    var filterValue = $( this ).attr('data-filter');
+    $grid.isotope({ filter: filterValue });
+  });
+  $('.button-group').each( function( i, buttonGroup ) {
+    var $buttonGroup = $( buttonGroup );
+    $buttonGroup.on( 'click', 'button', function() {
+      $buttonGroup.find('.is-checked').removeClass('is-checked');
+      $( this ).addClass('is-checked');
+    });
+  });
+});
+
+// debounce so filtering doesn't happen every millisecond
+function debounce( fn, threshold ) {
+  var timeout;
+  return function debounced() {
+    if ( timeout ) {
+      clearTimeout( timeout );
+    }
+    function delayed() {
+      fn();
+      timeout = null;
+    }
+    timeout = setTimeout( delayed, threshold || 100 );
+  }
+}
+
+$(window).bind("load", function() {
+  $('#all').click();
+});
+
 
 function updateGallery() {
-  var tracks = $('.card-columns');
-  tracks.empty();
+  $('section').empty();
   $.each(galleryItems,function(index,item){
-    let div = document.createElement('div');
-    div.classList.add('card');
-
-    var img = document.createElement('img');
-    img.classList.add('img-fluid');
-    img.src = item.thumb;
-    img.setAttribute('data-full', item.url);
-    div.appendChild(img);
-
-    tracks.append(div);
+    console.log(item);
+    $('section').append('<div class="card"><img src="'+item.url+'" class="img-fluid"/></div>');
   });
 }
 
@@ -21,7 +49,7 @@ function loadGallery(){
   var len = 16;//How long you want to load.
   var pics = [];
   for(var i=1;i<=len;i++){
-    var src = './../images/pic'+i+'.jpg';
+    var src = './images/pic'+i+'.jpg';
     pics.push({
       "id": i,
       "url": src
@@ -32,12 +60,3 @@ function loadGallery(){
 
 let galleryItems = loadGallery();
 updateGallery(); // once on load
-
-// const para = document.createElement("article");
-// const img = document.createElement("img");
-// const node = document.createTextNode("This is new.");
-// para.appendChild(img);
-// para.appendChild(node);
-
-// const element = document.getElementById("grid-container");
-// element.appendChild(para);
