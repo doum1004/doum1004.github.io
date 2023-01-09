@@ -32,6 +32,17 @@
     <script src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.js" type="text/javascript"></script>
     <script type="text/javascript">
+        function play_stop_music() {
+            let player = document.getElementById('player')
+            if (player.paused == true) {
+                player.play();
+            }
+            else {
+                player.pause();
+                player.currentTime = 0;
+            }
+        }
+
         function sendMail() {
 
             (function () {
@@ -481,9 +492,9 @@
 </div>
 
 <div class="bottom_left">
-    <audio id="player" src="mus.mp3" autoplay></audio>
+    <audio id="player" src="mus.mp3"></audio>
     <div>
-        <i class="fa fa-music fa-2x" onclick="document.getElementById('player').play()"></i>
+        <i class="fa fa-music fa-2x" onclick="play_stop_music()"></i>
     </div>
 </div>
 
