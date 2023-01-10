@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css?family=Gamja+Flower|Gugi|Noto+Serif+KR|Stylish|Sunflower:300" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-2.2.1.js"></script>
     <script async src="http://www.instagram.com/embed.js" type="text/javascript"></script>
-    <script id="dsq-count-scr" src="//jc-wedding-2.disqus.com/count.js" async></script>
+    <script id="dsq-count-scr" src="http://jc-wedding-2.disqus.com/count.js" async></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Google tag (gtag.js) -->
@@ -71,31 +71,33 @@
             return result;
         }
 
-        $(document).ready(function () {
+        function loadGitRepoReadME() {
+            $(document).ready(function () {
+                function getText(){
+                    var result = null;
+                    $.ajax( { url: "https://raw.githubusercontent.com/doum1004/doum1004.github.io/wedding-invitation/master/README.md",
+                            type: 'get',
+                            dataType: 'html',
+                            async: false,
+                            success: function(data) { result = data; }
+                        }
+                    );
+                    FileReady = true;
+                    return result;
+                }
+                var markdown_source = getText();
+                var comment_contents = markdown_source.split("축하의 말")[1];
 
-            function getText(){
-                var result = null;
-                $.ajax( { url: "https://raw.githubusercontent.com/doum1004/doum1004.github.io/wedding-invitation/master/README.md",
-                        type: 'get',
-                        dataType: 'html',
-                        async: false,
-                        success: function(data) { result = data; }
-                    }
-                );
-                FileReady = true;
-                return result;
-            }
-            var markdown_source = getText();
-            var comment_contents = markdown_source.split("축하의 말")[1];
+                var md = new Remarkable();
+                $("#comments").append(md.render(comment_contents));
 
-            var md = new Remarkable();
-            $("#comments").append(md.render(comment_contents));
 
-            
-            if(findGetParameter('gift')=='false'){
-                $('#gifts').hide();
-            }
-        });
+                if(findGetParameter('gift')=='false'){
+                    $('#gifts').hide();
+                }
+            });
+        }
+
     </script>
 </head>
 
@@ -103,19 +105,19 @@
 <header></header>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v3.2"></script>
+
 <div class="page-content">
     <div class="div">
         <div class="ww-home-page" id="home">
             <div class="ww-wedding-announcement d-flex align-items-center justify-content-start">
                 <div class="container ww-announcement-container">
-                    <p class="ww-couple-name ww-title" style="font-size:3.5em">Jehyeok & Chi</p>
-                    <p class="h2 mt-5 ww-title" style="font-family: 'Gugi', cursive; font-size:1.0em">
-                        | WE ARE GETTING MARRIED |
-                    </p>
+                    <p class="ww-couple-name ww-title" style="font-size:3.5em" data-i18n-key="home-title"></p>
+                    <p class="h2 mt-5 ww-title" style="font-family: 'Gugi', cursive; font-size:1.0em" data-i18n-key="home-subtitle"></p>
                     <p class="h2 mt-5 ww-title"
                        style="font-family: 'Noto Serif KR', serif; font-size:1.0em; letter-spacing:-1px">
-                        <b style="font-size:1.4em;">2023. 03. 24. FRI PM 05:00</b>
-                        <br>제주특별자치도 서귀포시 씨에스호텔
+                        <b style="font-size:1.4em;" data-i18n-key="home-date"></b>
+                        <br>
+                        <p data-i18n-key="home-location"></p>
                     </p>
                 </div>
             </div>
@@ -128,6 +130,11 @@
                             data-target="#ww-navbarNav" data-toggle="collapse" type="button">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+
+                    <select data-i18n-switcher class="locale-switcher">
+                        <option value="ko">Korean (한국어)</option>
+                        <option value="en">English</option>
+                    </select>
                     <div class="collapse navbar-collapse text-uppercase" id="ww-navbarNav">
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#home">Home</a></li>
@@ -141,53 +148,47 @@
                 </div>
             </nav>
         </div>
+
         <div class="ww-section" id="couple">
             <div class="container">
-                <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">신부 & 신랑</h2>
+                <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="couple-title"></h2>
                 <div class="row text-center">
                     <div class="col-md-6">
                         <div class="mt-3">
-                            <h3 class="h2 ww-title" style="font-family: 'Sunflower', sans-serif; font-size:1.5em">
-                                장츠</h3>
-                            <img alt="Groom" class="img-fluid" src="images/bride.jpg"/>
+                            <h3 class="h2 ww-title" style="font-family: 'Sunflower', sans-serif; font-size:1.5em" data-i18n-key="couple-bride"></h3>
+                            <img alt="Bride" class="img-fluid" src="images/bride.jpg"/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mt-3">
-                            <h3 class="h2 ww-title" style="font-family: 'Sunflower', sans-serif; font-size:1.5em">
-                                이제혁</h3>
-                            <img alt="Bride" class="img-fluid" src="images/groom.jpg"/>
+                            <h3 class="h2 ww-title" style="font-family: 'Sunflower', sans-serif; font-size:1.5em" data-i18n-key="couple-groom"></h3>
+                            <img alt="Groom" class="img-fluid" src="images/groom.jpg"/>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="ww-section bg-light" id="events">
             <div class="container ww-wedding-event">
-                <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">초대합니다</h2>
+                <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="events-title"></h2>
                 <div class="col text-center mb-5">
-                    <h6 class="text-center" style="font-family: 'Noto Serif KR', serif;">
-                        만난지 342일 되는 그날
-                    </h6>
+                    <h6 class="text-center" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="events-content1"></h6>
                     <br>
-                    <h5 class="h5 text-left" style="font-family: 'Noto Serif KR', serif;">
-                        타국에서 만나 인연이된 둘, <br>
-                        이제 한 가족이 되어 새로운 여정을 함께 하려 합니다. <br><br>
-                        참석하시어 자리를 빛내주시면 감사하겠습니다.<br><br>
-                    </h5>
+                    <h5 class="h5 text-left" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="events-content2"></h5>
                 </div>
                 <div class="row">
                     <div class="col-md-7 col-sm-12">
                         <div class="my-3">
-                            <div class="h4">웨딩 본식</div>
+                            <div class="h4" data-i18n-key="events-event1"></div>
                             <ul>
                                 <li>
                                     <i class="text-muted fas fa-map-marker-alt"></i>
-                                    <span class="pl-2 text-muted">제주 씨에스 호텔</span>
+                                    <span class="pl-2 text-muted" data-i18n-key="events-event1-location"></span>
                                 </li>
                                 <li class="pt-2">
                                     <i class="text-muted far fa-calendar-alt"></i>
-                                    <span class="pl-2 text-muted">2023년 3월 24일, 5:00PM</span>
+                                    <span class="pl-2 text-muted" data-i18n-key="events-event1-date"></span>
                                 </li>
                             </ul>
                         </div>
@@ -201,15 +202,15 @@
                 <div class="row">
                     <div class="col-md-7 col-sm-12">
                         <div class="my-3">
-                            <div class="h4">식사</div>
+                            <div class="h4" data-i18n-key="events-event2"></div>
                             <ul>
                                 <li>
                                     <i class="text-muted fas fa-map-marker-alt "></i>
-                                    <span class="pl-2 text-muted">씨에스 호텔 야외 혹은 실내</span>
+                                    <span class="pl-2 text-muted" data-i18n-key="events-event2-location"></span>
                                 </li>
                                 <li class="pt-2">
                                     <i class="text-muted far fa-calendar-alt "></i>
-                                    <span class="pl-2 text-muted">2023년 3월 24일, 6:30PM - 8:30PM</span>
+                                    <span class="pl-2 text-muted" data-i18n-key="events-event2-date"></span>
                                 </li>
                             </ul>
                         </div>
@@ -221,11 +222,10 @@
             </div>
         </div>
 
-
         <div class="ww-section" id="gallery">
             <div class="ww-photo-gallery">
                 <div class="container">
-                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">포토 갤러리</h2>
+                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="gallery-title"></h2>
                     <div class="ww-gallery">
                         <div class="card-columns">
                             <section id="grid-container" class="transitions-enabled fluid masonry js-masonry grid">
@@ -245,27 +245,27 @@
         </div>
        <div class="ww-section parallax-window  text-white" data-parallax="scroll" data-image-src="images/sub-background.jpg" id="gifts" style="height: 500px;">
             <div class="ww-gift-section" style="background-color: #00000066; padding-top: 25px;">
-                <h4 class="h1 text-center pb-3 ww-title" style="font-family: 'Gugi', cursive; font-size:1.8em">우리 둘</h4>
+                <h4 class="h1 text-center pb-3 ww-title" style="font-family: 'Gugi', cursive; font-size:1.8em" data-i18n-key="gallery-content1">우리 둘</h4>
                 <div class="col text-center mb-5">
-                    <h6 style="font-family: 'Noto Serif KR', serif; font-size:1.5em">사랑하며 살겠습니다.</h6>
+                    <h6 style="font-family: 'Noto Serif KR', serif; font-size:1.5em" data-i18n-key="gallery-content2">사랑하며 살겠습니다.</h6>
                     <br>
                 </div>
             </div>
         </div>
 
-        <div class="ww-section bg-light" id="video">
+        <!-- <div class="ww-section bg-light" id="video">
             <div class="container ww-wedding-event">
                 <iframe width="100%" height="315" frameborder="0" allowfullscreen src="https://www.youtube.com/embed/_pLJi7vsmaU"></iframe>
             </div>
-        </div>
+        </div> -->
 
         <div class="ww-section ww-rsvp-detail" id="map">
             <div class="container">
                 <div class="col text-center">
-                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">오시는 길</h2>
+                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="map-title"></h2>
                     <div>
-                        <h5 style="font-family: 'Noto Serif KR', serif;">씨에스 호텔</h5>
-                        <h6 style="font-family: 'Noto Serif KR', serif;">(대한민국 제주특별자치도 서귀포시 중문동 중문관광로 198)</h6>
+                        <h5 style="font-family: 'Noto Serif KR', serif;" data-i18n-key="map-location"></h5>
+                        <h6 style="font-family: 'Noto Serif KR', serif;" data-i18n-key="map-address"></h6>
                     </div>
                 </div>
 
@@ -287,10 +287,7 @@
                         </div>
                         <div class="col text-center">
                             <a href="http://kko.to/kp6X7CL8Uu">
-                            <label style="font-family: 'Noto Serif KR', serif; font-size: 15px;">
-                                제주공항앞 공항 리무진 버스 600번 - 씨에스호텔 정류장<br>
-                                (1시간 20분, 배차 간격 15-40분)
-                            </label>
+                            <label style="font-family: 'Noto Serif KR', serif; font-size: 15px;" data-i18n-key="map-transportation"></label>
                             </a>
                         </div>
                         <div class="my-3">
@@ -307,7 +304,7 @@
             <div class="ww-photo-gallery">
                 <div class="container">
                     <div class="col text-center">
-                        <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">응원하기</h2>
+                        <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="donation-title"></h2>
                         <br>
                         <!-- <a id="link-kakaopay" href="http://kko.to/C3867c2df" target="_blank"><img alt="카카오페이 송금" src="images/btn_send_regular.png"></a><br> -->
                         <a id="link-toss" href="https://toss.me/doum79" target="_blank"><img alt="토스 송금" src="images/logo-toss-blue.png" style="width: 168px"></a>
@@ -315,9 +312,7 @@
                     </div>
                     <div class="row text-center">
                         <div class="col-md-12">
-                            <p class="h2 mt-5 " style="font-family: 'Noto Serif KR', serif; font-size:1.3em;">
-                                행복하게 잘 살겠습니다.<br>
-                            </p>
+                            <p class="h2 mt-5 " style="font-family: 'Noto Serif KR', serif; font-size:1.3em;" data-i18n-key="donation-content"></p>
                         </div>
                     </div>
                 </div>
@@ -328,7 +323,7 @@
             <div class="ww-photo-gallery">
                 <div class="container">
                     <div class="col text-center">
-                        <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">축하메시지</h2><br>
+                        <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="comment-title"></h2><br>
 
                         <div id="disqus_thread"></div>
                         <script>
@@ -406,6 +401,7 @@
 <script src="scripts/main.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 <script src="./scripts/photos.js"></script>
+<script src="scripts/translator.js"></script>
 
 <div class="bottom_right"><i class="fa fa-arrow-up fa-2x" id="go-to-top"></i>
 </div>
