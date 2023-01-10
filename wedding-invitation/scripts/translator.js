@@ -73,15 +73,7 @@ const translations = {
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URL(location.href).searchParams;
   const lang = urlParams.get('lang');
-  console.log(lang);
-  if (lang != null && translations[lang]) {
-    setLocale(lang);
-    bindLocaleSwitcher(lang);
-  }
-  else {
-    setLocale(defaultLocale);
-    bindLocaleSwitcher(defaultLocale);
-  }
+  setLocale(lang);
 });
 
 // Replace the inner text of the given HTML element
@@ -96,10 +88,9 @@ function translateElement(element) {
 // Whenever the user selects a new locale, we
 // load the locale's translations and update
 // the page
-function bindLocaleSwitcher(initialValue) {
-  const switcher =
-    document.querySelector("[data-i18n-switcher]");
-  switcher.value = initialValue;
+function bindLocaleSwitcher() {
+  const switcher = document.querySelector("[data-i18n-switcher]");
+  switcher.value = locale;
   switcher.onchange = (e) => {
     // Set the locale to the selected option[value]
     setLocale(e.target.value);
@@ -107,9 +98,15 @@ function bindLocaleSwitcher(initialValue) {
 }
 
 function setLocale(newLocale) {
-  if (newLocale === locale) return;
+  if (!translations[newLocale])
+    newLocale = defaultLocale;
+
+  if (newLocale === locale)
+    return;
+
   locale = newLocale;
   translatePage();
+  bindLocaleSwitcher();
 }
 
 function translatePage() {
