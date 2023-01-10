@@ -46,7 +46,7 @@ function updateGallery() {
 }
 
 function loadGallery(){
-  var len = 22;//How long you want to load.
+  var len = 26;//How long you want to load.
   var pics = [];
   for(var i=1;i<=len;i++){
     var src = './images/pic'+i+'.jpg';
