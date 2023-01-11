@@ -53,7 +53,7 @@ const translations = {
     "events-event1-location": "JEJU SEAES HOTEL",
     "events-event1-date": "2023. 03. 24. FRI PM 05:00",
     "events-event2": "Dinner",
-    "events-event2-location": "씨에스 호텔 야외 혹은 실내",
+    "events-event2-location": "JEJU SEAES HOTEL (outdoor or indoor)",
     "events-event2-date": "2023. 03. 24. 6:30PM - 8:30PM",
     "gallery-title": "GALLERY",
     "gallery-content1": "TWO OF US",
