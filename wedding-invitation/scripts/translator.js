@@ -48,7 +48,7 @@ const translations = {
     "couple-groom": "JEHYEOK LEE",
     "events-title": "WEDDING",
     "events-content1": "MARRIED ON 342 DAY",
-    "events-content2": "From a foreign country, the two became together,\nNow, as a family, we are about to start on a new journey together.\n\n",
+    "events-content2": "From a distant country,\nthe two of us\nbecame together by love\n\nNow, as a family\nwe are about to start on\na new journey together.\n\nThe two of us\nshall give each other light\n\nThe two of us\nshall give each other rest\n\nPlease bless\n and encourage of us",
     "events-event1": "Wedding ceremony",
     "events-event1-location": "JEJU SEAES HOTEL",
     "events-event1-date": "2023. 03. 24. FRI PM 05:00",
