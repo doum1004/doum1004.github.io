@@ -10,7 +10,7 @@ $(document).ready(function () {
         $('html,body').animate({scrollTop: 0}, 400);
         return false;
     });
-    
+
     hideInvitedElements()
 })
 
@@ -21,7 +21,7 @@ function hideInvitedElements() {
         if (invited == null)
             item.style.display = 'none';
     });
-  }
+}
 
 // Smooth scroll for links with hashes
 $("a.smooth-scroll").click(function (event) {

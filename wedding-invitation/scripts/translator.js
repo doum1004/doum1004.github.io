@@ -107,10 +107,18 @@ function setLocale(newLocale) {
   locale = newLocale;
   translatePage();
   bindLocaleSwitcher();
+  hideElements("[koonly]", locale != "ko")
 }
 
 function translatePage() {
   document
     .querySelectorAll("[data-i18n-key]")
     .forEach(translateElement);
+}
+
+function hideElements(elementKey, hide) {
+    document.querySelectorAll(elementKey).forEach(function (item) {
+        if (hide)
+            item.style.display = 'none';
+    });
 }

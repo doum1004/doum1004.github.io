@@ -312,21 +312,23 @@
             </div>
         </div>
 
-        <div class="ww-section bg-light" id="donation">
+        <div class="ww-section bg-light" id="donation" koonly>
             <div class="ww-photo-gallery">
                 <div class="container">
                     <div class="col text-center">
                         <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="donation-title"></h2>
                         <br>
-                        <!-- <a id="link-kakaopay" href="http://kko.to/C3867c2df" target="_blank"><img alt="카카오페이 송금" src="images/btn_send_regular.png"></a><br> -->
-                        <!-- <a id="link-toss" href="https://toss.me/doum79" target="_blank"><img alt="토스 송금" src="images/logo-toss-blue.png" style="width: 168px"></a> -->
                         <div class="css-account">
-                            <input id="account-1" type="text" value="카카오뱅크 3333162751177 지은정" readonly>
+                            <input id="account-1" type="text" value="대구은행 02107192179 지은정" readonly>
                             <button onclick="copyToClipBoard('account-1')">복사</button>
                         </div>
-                        <div class="css-account">
+                        <!-- <div class="css-account">
                             <input id="account-2" type="text" value="토스뱅크 190854918572 이제혁" readonly>
                             <button onclick="copyToClipBoard('account-2')">복사</button>
+                        </div> -->
+                        <div class="css-account">
+                            <a id="link-kakaopay" href="https://qr.kakaopay.com/Ej8FONCGy" target="_blank"><img alt="카카오페이 송금" src="images/logo-kakaopay.png"></a>
+                            <a id="link-toss" href="supertoss://send?amount=0&bank=%ED%86%A0%EC%8A%A4%EB%B1%85%ED%81%AC&accountNo=100001110431&origin=qr" target="_blank"><img alt="토스 송금" src="images/logo-toss-blue.png" style="width: 168px"></a>
                         </div>
                     </div>
                     <div class="row text-center">
