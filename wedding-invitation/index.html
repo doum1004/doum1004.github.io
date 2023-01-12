@@ -43,6 +43,14 @@
             }
         }
 
+        function copyToClipBoard(id) {
+            var content = document.getElementById(id);
+            content.select();
+            content.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(content.value);
+            content.select();
+        }
+
         function sendMail() {
 
             (function () {
@@ -144,7 +152,6 @@
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#couple">Couple</a></li>
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#events">Events</a></li>
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#gallery">Gallery</a></li>
-                            <li class="nav-item"><a class="nav-link smooth-scroll" href="#donation">Donation</a></li>
                             <li class="nav-item"><a class="nav-link smooth-scroll" href="#comment">Comment</a></li>
                         </ul>
                     </div>
@@ -180,46 +187,48 @@
                     <br>
                     <h5 class="h5 text-left" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="events-content2"></h5>
                 </div>
-                <div class="row">
-                    <div class="col-md-7 col-sm-12">
-                        <div class="my-3">
-                            <div class="h4" data-i18n-key="events-event1"></div>
-                            <ul>
-                                <li>
-                                    <i class="text-muted fas fa-map-marker-alt"></i>
-                                    <span class="pl-2 text-muted" data-i18n-key="events-event1-location"></span>
-                                </li>
-                                <li class="pt-2">
-                                    <i class="text-muted far fa-calendar-alt"></i>
-                                    <span class="pl-2 text-muted" data-i18n-key="events-event1-date"></span>
-                                </li>
-                            </ul>
+                <div invited>
+                    <div class="row">
+                        <div class="col-md-7 col-sm-12">
+                            <div class="my-3">
+                                <div class="h4" data-i18n-key="events-event1"></div>
+                                <ul>
+                                    <li>
+                                        <i class="text-muted fas fa-map-marker-alt"></i>
+                                        <span class="pl-2 text-muted" data-i18n-key="events-event1-location"></span>
+                                    </li>
+                                    <li class="pt-2">
+                                        <i class="text-muted far fa-calendar-alt"></i>
+                                        <span class="pl-2 text-muted" data-i18n-key="events-event1-date"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-12">
+                            <div class="my-3">
+                                <img alt="Wedding Party" class="img-fluid" src="images/wedding-location-pic.jpeg"/>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-5 col-sm-12">
-                        <div class="my-3">
-                            <img alt="Wedding Party" class="img-fluid" src="images/wedding-location-pic.jpeg"/>
+                    <div class="row">
+                        <div class="col-md-7 col-sm-12">
+                            <div class="my-3">
+                                <div class="h4" data-i18n-key="events-event2"></div>
+                                <ul>
+                                    <li>
+                                        <i class="text-muted fas fa-map-marker-alt "></i>
+                                        <span class="pl-2 text-muted" data-i18n-key="events-event2-location"></span>
+                                    </li>
+                                    <li class="pt-2">
+                                        <i class="text-muted far fa-calendar-alt "></i>
+                                        <span class="pl-2 text-muted" data-i18n-key="events-event2-date"></span>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-7 col-sm-12">
-                        <div class="my-3">
-                            <div class="h4" data-i18n-key="events-event2"></div>
-                            <ul>
-                                <li>
-                                    <i class="text-muted fas fa-map-marker-alt "></i>
-                                    <span class="pl-2 text-muted" data-i18n-key="events-event2-location"></span>
-                                </li>
-                                <li class="pt-2">
-                                    <i class="text-muted far fa-calendar-alt "></i>
-                                    <span class="pl-2 text-muted" data-i18n-key="events-event2-date"></span>
-                                </li>
-                            </ul>
+                        <div class="col-md-5 col-sm-12">
+                            <div class="my-3"><img alt="Reception" class="img-fluid" src="images/wedding-reception-pic.jpeg"/></div>
                         </div>
-                    </div>
-                    <div class="col-md-5 col-sm-12">
-                        <div class="my-3"><img alt="Reception" class="img-fluid" src="images/wedding-reception-pic.jpeg"/></div>
                     </div>
                 </div>
             </div>
@@ -262,7 +271,7 @@
             </div>
         </div> -->
 
-        <div class="ww-section ww-rsvp-detail" id="map">
+        <div class="ww-section ww-rsvp-detail" id="map" invited>
             <div class="container">
                 <div class="col text-center">
                     <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="map-title"></h2>
@@ -310,8 +319,15 @@
                         <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="donation-title"></h2>
                         <br>
                         <!-- <a id="link-kakaopay" href="http://kko.to/C3867c2df" target="_blank"><img alt="카카오페이 송금" src="images/btn_send_regular.png"></a><br> -->
-                        <a id="link-toss" href="https://toss.me/doum79" target="_blank"><img alt="토스 송금" src="images/logo-toss-blue.png" style="width: 168px"></a>
-                        <br>
+                        <!-- <a id="link-toss" href="https://toss.me/doum79" target="_blank"><img alt="토스 송금" src="images/logo-toss-blue.png" style="width: 168px"></a> -->
+                        <div class="css-account">
+                            <input id="account-1" type="text" value="카카오뱅크 3333162751177 지은정" readonly>
+                            <button onclick="copyToClipBoard('account-1')">복사</button>
+                        </div>
+                        <div class="css-account">
+                            <input id="account-2" type="text" value="토스뱅크 190854918572 이제혁" readonly>
+                            <button onclick="copyToClipBoard('account-2')">복사</button>
+                        </div>
                     </div>
                     <div class="row text-center">
                         <div class="col-md-12">

@@ -10059,4 +10059,30 @@ body {
     bottom: 0;
     left: 0;
     margin: 0px 15px 15px 15px;
+} 
+
+.css-account {
+    width: 100%;
+    background: rgb(245, 245, 245);
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 10px 0px;
+}
+
+.css-account input {
+    border: none;
+    width: 220px;
+    background: rgb(0, 0, 0, 0);
+}
+
+.css-account button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 0.7rem;
+    border: 0px;
+    border-radius: 5px;
+    background: rgb(206, 206, 206);
+    display: inline-block;
+    color: rgb(255, 255, 255);
+    text-align: left;
 }
