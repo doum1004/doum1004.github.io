@@ -19,7 +19,7 @@ const translations = {
     "couple-groom": "이제혁",
     "events-title": "결혼합니다",
     "events-content1": "만난지 342일 되는 그날",
-    "events-content2": "타국에서 만나 사랑으로\n하나된 저희 두 사람\n\n가족들의 축복속에\n소규모 예식을 올리게 되었습니다.\n\n많은 분을 초대하지 못하는점\n넓은 마음으로 양해 구합니다.\n\n저희 둘,\n서로 아껴주고 배려하며\n사랑하며 살겠습니다.\n\n축복하고 격려해 주세요\n\n",
+    "events-content2": "타국에서 만나 사랑으로\n하나된 저희 두 사람\n\n가족들의 축복속에\n소규모 예식을 올리게 되었습니다.\n\n많은 분을 초대하지 못하는점\n넓은 마음으로 양해를 구합니다.\n\n저희 둘,\n서로 아껴주고 배려하며\n사랑하며 살겠습니다.\n\n축복하고 격려해 주세요\n\n",
     "events-event1": "웨딩 본식",
     "events-event1-location": "제주 씨에스 호텔",
     "events-event1-date": "2023년 3월 24일, 5:00PM",
