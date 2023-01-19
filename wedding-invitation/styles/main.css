@@ -9837,6 +9837,7 @@ body {
 
 .comment-table input[type="text"],
 .comment-table input[type="password"] {
+    width: 120px;
   height: 25px;
   line-height : normal;
   padding: .8em .5em;
