@@ -6,11 +6,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $('#go-to-top').click(function () {
-        $('html,body').animate({scrollTop: 0}, 400);
-        return false;
-    });
-
     hideInvitedElements();
 })
 
