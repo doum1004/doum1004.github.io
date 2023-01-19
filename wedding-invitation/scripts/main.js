@@ -12,7 +12,6 @@ $(document).ready(function () {
     });
 
     hideInvitedElements();
-    commentScript();
 })
 
 function hideInvitedElements() {
