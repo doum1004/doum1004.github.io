@@ -2,6 +2,10 @@ var albumBucketName = "---------------------";
 var bucketRegion = "-------------------------";
 var IdentityPoolId = "-----------------------";
  
+$(document).ready(function(){
+    subscribeCommentSubmitButtonUpdate();
+});
+
 AWS.config.update({
   region: bucketRegion,
   credentials: new AWS.CognitoIdentityCredentials({
@@ -80,13 +84,14 @@ function upload_to_db() {
     var article_pass = document.querySelector("#input-comment-pass");
     var article_content = document.querySelector("#input-comment-content");
  
-    var Item = {
+    var item = {
         'id': 'jc',
         'name': article_name.value,
         'pass': article_pass.value,
         'content': article_content.value
     }
-    console.log(Item);
+    if (item.id == '' || item.name == '' || item.pass == '' || item.content == '')
+        return;
  
     fetch(comment_url, {
         method: "POST",
@@ -95,7 +100,7 @@ function upload_to_db() {
         },
         body: JSON.stringify({
             "TableName": "simple_board",
-            "Item": Item
+            "Item": item
         })
     }).then(resp => {
         console.log(resp);
@@ -103,6 +108,7 @@ function upload_to_db() {
         article_name.value = "";
         article_pass.value = "";
         article_content.value = "";
+        document.querySelector("#input-comment-submit").disabled = true;
     })
     .catch(err => console.log(err))
 }
@@ -170,3 +176,21 @@ function add_article_with_photo(albumName) {
         if (betweenTimeYears == 1) return `${betweenTimeYears} year ago`;
         return `${betweenTimeYears} years ago`;
  }
+ 
+function subscribeCommentSubmitButtonUpdate() {
+    const inputName = document.querySelector('#input-comment-name');
+    const inputPass = document.querySelector('#input-comment-pass');
+    const inputContent = document.querySelector('#input-comment-content');
+    const inputSubmit = document.querySelector('#input-comment-submit');
+
+    inputName.addEventListener('keyup', activeEvent);
+    inputPass.addEventListener('keyup', activeEvent);
+    inputContent.addEventListener('keyup', activeEvent);
+
+    function activeEvent() {
+        switch(!(inputName.value && inputPass.value && inputContent.value)){
+            case true : inputSubmit.disabled = true; break;
+            case false : inputSubmit.disabled = false; break
+        }
+    }
+}
