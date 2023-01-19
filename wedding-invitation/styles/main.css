@@ -9754,6 +9754,101 @@ body {
     font-family: "Dosis", sans-serif;
 }
 
+.comment-list {
+    float: left;
+    display: table;
+}
+
+.comment-list-li {
+    list-style: none;
+    padding-left: 0px;
+    list-style-type: none;
+    position: relative;
+    /* background-color: #ffffff; */
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.comment-item {
+    flex-direction: row;
+    position: relative;
+    display: table-row;
+}
+
+.comment-item-row {
+    display: flex
+}
+
+.comment-item-name {
+    float: left;
+    min-width: 60px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.comment-item-date {
+    float: left;
+    margin-left: 10px;
+}
+
+.comment-item-delete {
+    float: right;
+    text-align: right;
+    flex-grow: 1;
+}
+
+.comment-item-content {
+    margin-top: 10px;
+    float: left;
+}
+
+.comment-table {
+    width: 100%;  /* 원하는 너비 설정 */ 
+    flex-direction: row;
+    position: relative;
+}
+
+.comment-table-row1 {
+    margin-bottom: 5px;
+    float: left;
+}
+
+.comment-table textarea {
+    width: 100%;
+    height: 55px;
+    line-height : normal;
+    padding: .8em .5em;
+    font-family: inherit;
+    border: 1px solid #999;
+    border-radius: 0;
+    outline-style: none;  /* 포커스시 발생하는 효과 제거를 원한다면 */
+    -webkit-appearance: none;  /* 브라우저별 기본 스타일링 제거 */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.comment-table button {
+    padding: .0em .5em;
+    height: 25px;
+    font-family: inherit;
+    border-radius: 30;
+    align-self: right;
+}
+
+.comment-table input[type="text"],
+.comment-table input[type="password"] {
+  height: 25px;
+  line-height : normal;
+  padding: .8em .5em;
+  font-family: inherit;
+  border: 1px solid #999;
+  border-radius: 0;
+  outline-style: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 /* Home Page Style */
 .ww-home-page {
     background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../images/main-background.jpg") no-repeat center center;

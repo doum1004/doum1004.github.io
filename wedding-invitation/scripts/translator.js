@@ -15,7 +15,9 @@ const translations = {
     "home-date": "2023. 03. 24. FRI PM 05:00",
     "home-location": "제주 서귀포시 씨에스호텔",
     "couple-title": "신부 & 신랑",
+    "couple-bride-family": "장ㅇㅇ 리우빙 딸",
     "couple-bride": "장츠",
+    "couple-groom-family": "이근호 지은정 아들",
     "couple-groom": "이제혁",
     "events-title": "결혼합니다",
     "events-content1": "만난지 342일 되는 그날",
@@ -35,7 +37,7 @@ const translations = {
     "map-transportation": "제주공항앞 공항 리무진 버스 600번 - 씨에스호텔 정류장",
     "donation-title": "마음전하는 곳",
     "donation-content": "행복하게 잘 살겠습니다",
-    "comment-title": "축하메시지",
+    "comment-title": "응원메시지",
   },
 
   "en": {
