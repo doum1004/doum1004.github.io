@@ -9828,26 +9828,30 @@ body {
 }
 
 .comment-table button {
+    margin: 0px 0px;
     padding: .0em .5em;
     height: 25px;
     font-family: inherit;
     border-radius: 30;
+    border: 1px solid #999;
     align-self: right;
+    vertical-align: middle;
 }
 
 .comment-table input[type="text"],
 .comment-table input[type="password"] {
-    width: 120px;
-  height: 25px;
-  line-height : normal;
-  padding: .8em .5em;
-  font-family: inherit;
-  border: 1px solid #999;
-  border-radius: 0;
-  outline-style: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+    width: 110px;
+    height: 25px;
+    line-height : normal;
+    padding: .8em .5em;
+    font-family: inherit;
+    border: 1px solid #999;
+    border-radius: 0;
+    outline-style: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    vertical-align: middle;
 }
 
 /* Home Page Style */
