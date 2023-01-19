@@ -14,7 +14,7 @@ const translations = {
     "home-subtitle": "| WE ARE GETTING MARRIED |",
     "home-date": "2023. 03. 24. FRI PM 04:30",
     "home-location": "제주 서귀포시 씨에스호텔",
-    "couple-title": "신부 & 신랑",
+    "couple-title": "신랑 & 신부",
     "couple-bride-family": "장ㅇㅇ 리우빙 딸",
     "couple-bride": "장츠",
     "couple-groom-family": "이근호 지은정 아들",
@@ -45,7 +45,7 @@ const translations = {
     "home-subtitle": "| WE ARE GETTING MARRIED |",
     "home-date": "2023. 03. 24. FRI PM 04:30",
     "home-location": "JEJU SEOGWIPO SEAES HOTEL",
-    "couple-title": "BRIDE & GROOM",
+    "couple-title": "GROOM & BRIDE",
     "couple-bride": "CHI ZHANG",
     "couple-groom": "JEHYEOK LEE",
     "events-title": "MARRIED",
@@ -84,6 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function translateElement(element) {
   const key = element.getAttribute("data-i18n-key");
   const translation = translations[locale][key];
+  if (translation == null)
+    translation = translations[defaultLocale][key];
   element.innerText = translation;
 }
 
