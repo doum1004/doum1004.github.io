@@ -24,25 +24,6 @@ function hideInvitedElements() {
     });
 }
 
-function commentScript() {
-    const formWrap = document.querySelector('.form_wrap_line');
-    const inputName = document.querySelector('#input-comment-name');
-    const inputPass = document.querySelector('#input-comment-pass');
-    const inputContent = document.querySelector('#input-comment-content');
-    const inputSubmit = document.querySelector('#input-comment-submit');
-
-    inputName.addEventListener('keyup', activeEvent);
-    inputPass.addEventListener('keyup', activeEvent);
-    inputContent.addEventListener('keyup', activeEvent);
-
-    function activeEvent() {
-        switch(!(inputName.value && inputPass.value && inputContent.value)){
-            case true : inputSubmit.disabled = true; break;
-            case false : inputSubmit.disabled = false; break
-        }
-    }
-}
-
 // Smooth scroll for links with hashes
 $("a.smooth-scroll").click(function (event) {
     // On-page links
