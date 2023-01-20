@@ -10143,6 +10143,14 @@ body {
 }
 
 
+.top_right {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 10px 15px 15px 15px;
+}
+
 .bottom_right {
     overflow: hidden;
     position: fixed;
