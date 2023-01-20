@@ -26,14 +26,34 @@ function createNode(element, className) {
     return node;
 }
 
-function append(parent, el){
+function append(parent, el) {
     return parent.appendChild(el);
 }
 
-function loadBoard(){
-    var elem = document.getElementById('comment-list');
-    elem.innerHTML = "";
-    
+var commentCount = 0;
+function loadBoardCount() {
+    var newCommentCount = 0;
+    fetch(comment_url + "?TableName=simple_board&id=jc&count=true", {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(resp => resp.json())
+    .then(function(data){
+        newCommentCount = data.ScannedCount;
+        if (newCommentCount == commentCount)
+        {
+            redrawBoard();
+            return;
+        }
+        commentCount = newCommentCount;
+        loadBoard();
+    })
+    .catch(err => console.log(err))
+}
+
+let items = [];
+function loadBoard(scrollToLast = false) {
     fetch(comment_url + "?TableName=simple_board&id=jc", {
         method: "GET",
         headers: {
@@ -41,43 +61,55 @@ function loadBoard(){
         }
     }).then(resp => resp.json())
     .then(function(data){
-        let items = data.Items;
-        return items.map(function(item) {
-            let li = createNode('li', 'comment-list-li');
-
-            let div1 = createNode('div', 'comment-item-row');
-            append(li, div1);
-
-            let name = createNode('div', 'comment-item-name');
-            if (item.name == '')
-                item.name = '(empty)';
-            name.innerHTML = item.name;
-            append(div1, name);
-
-            let date = createNode('div', 'comment-item-date');
-            if (item.date == '')
-                item.date = '(empty)';
-            date.innerHTML = timeForToday(item.date);
-            append(div1, date);
-
-            let del = createNode('div', 'comment-item-delete');
-            del.innerHTML = '<a href="#">Del</a>'
-            append(div1, del);
-
-            let div2 = createNode('div', 'comment-item-row');
-            append(li, div2);
-
-            let content = createNode('div', 'comment-item-content');
-            if (item.content == '')
-                item.content = '(empty)';
-            content.innerHTML = item.content;
-            append(div2, content);
-
-            append(elem, li);
-        })
+        items = data.Items;
+        redrawBoard(scrollToLast);
     })
     .catch(err => console.log(err))
 }
+
+function redrawBoard(scrollToLast = false) {
+    var elem = document.getElementById('comment-list');
+    elem.innerHTML = "";
+    
+    items.map(function(item) {
+        let li = createNode('li', 'comment-list-li');
+
+        let div1 = createNode('div', 'comment-item-row');
+        append(li, div1);
+
+        let name = createNode('div', 'comment-item-name');
+        if (item.name == '')
+            item.name = '(empty)';
+        name.innerHTML = item.name;
+        append(div1, name);
+
+        let date = createNode('div', 'comment-item-date');
+        if (item.date == '')
+            item.date = '(empty)';
+        date.innerHTML = timeForToday(item.date);
+        append(div1, date);
+
+        let del = createNode('div', 'comment-item-delete');
+        del.innerHTML = '<a href="#">Del</a>'
+        append(div1, del);
+
+        let div2 = createNode('div', 'comment-item-row');
+        append(li, div2);
+
+        let content = createNode('div', 'comment-item-content');
+        if (item.content == '')
+            item.content = '(empty)';
+        content.innerHTML = item.content;
+        append(div2, content);
+
+        append(elem, li);
+    });
+
+    if (scrollToLast) {
+        elem.lastElementChild.scrollIntoView();
+    }
+}
+
 
 function upload_to_db() {
     var article_name = document.querySelector("#input-comment-name");
@@ -92,6 +124,9 @@ function upload_to_db() {
     }
     if (item.id == '' || item.name == '' || item.pass == '' || item.content == '')
         return;
+    article_name.value = "";
+    article_pass.value = "";
+    article_content.value = "";
  
     fetch(comment_url, {
         method: "POST",
@@ -104,10 +139,7 @@ function upload_to_db() {
         })
     }).then(resp => {
         console.log(resp);
-        loadBoard();
-        article_name.value = "";
-        article_pass.value = "";
-        article_content.value = "";
+        loadBoard(true);
         document.querySelector("#input-comment-submit").disabled = true;
     })
     .catch(err => console.log(err))
@@ -153,28 +185,28 @@ function add_article_with_photo(albumName) {
         return alert("There was an error uploading your photo: ", err.message);
         }
     );
-    }
+}
 
-    function timeForToday(value) {
-        const today = new Date();
-        const timeValue = new Date(value);
+function timeForToday(value) {
+    const today = new Date();
+    const timeValue = new Date(parseInt(value));
 
-        const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-        if (betweenTime < 1) return 'just ago';
-        if (betweenTime == 60) return `${betweenTime} min ago`;
-        if (betweenTime < 60) return `${betweenTime} mins ago`;
+    const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+    if (betweenTime < 1) return 'just ago';
+    if (betweenTime == 60) return `${betweenTime} min ago`;
+    if (betweenTime < 60) return `${betweenTime} mins ago`;
 
-        const betweenTimeHour = Math.floor(betweenTime / 60);
-        if (betweenTimeHour == 1) return `${betweenTimeHour} hour ago`;
-        if (betweenTimeHour < 24) return `${betweenTimeHour} hours ago`;
+    const betweenTimeHour = Math.floor(betweenTime / 60);
+    if (betweenTimeHour == 1) return `${betweenTimeHour} hour ago`;
+    if (betweenTimeHour < 24) return `${betweenTimeHour} hours ago`;
 
-        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-        if (betweenTimeDay == 1) return `${betweenTimeDay} day ago`;
-        if (betweenTimeDay < 365) return `${betweenTimeDay} days`;
+    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+    if (betweenTimeDay == 1) return `${betweenTimeDay} day ago`;
+    if (betweenTimeDay < 365) return `${betweenTimeDay} days`;
 
-        const betweenTimeYears = Math.floor(betweenTimeDay / 365);
-        if (betweenTimeYears == 1) return `${betweenTimeYears} year ago`;
-        return `${betweenTimeYears} years ago`;
+    const betweenTimeYears = Math.floor(betweenTimeDay / 365);
+    if (betweenTimeYears == 1) return `${betweenTimeYears} year ago`;
+    return `${betweenTimeYears} years ago`;
  }
  
 function subscribeCommentSubmitButtonUpdate() {
