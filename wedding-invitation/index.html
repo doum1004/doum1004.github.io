@@ -68,6 +68,28 @@
             return result;
         }
 
+        let comment_board_time = '';
+        let comment_board_name = '';
+        function layout_delete_comment_on(board_time, board_name) {
+            comment_board_time = board_time;
+            comment_board_name = board_name;
+            document.getElementById("input-comment-delete-pass").value = "";
+            document.getElementById("overlay").style.display = "block";
+        }
+            
+        function layout_off() {
+            document.getElementById("input-comment-delete-pass").value = "";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function delete_comment() {
+            var inputPass = document.querySelector('#input-comment-delete-pass');
+            delete_to_db(comment_board_time, comment_board_name, inputPass.value);
+            inputPass.select();
+            inputPass.setSelectionRange(0, 99999);
+            inputPass.select();
+        }
+
         function submitToAPI(e){
                 e.preventDefault();
                 upload_to_db();
@@ -110,6 +132,15 @@
 <header></header>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v3.2"></script>
+
+<div id="overlay" onclick="layout_off()">
+    <div id="overlay-item" onclick="event.stopPropagation()">
+        <div id="overlay-item-row">
+            <input type="password" id="input-comment-delete-pass" placeholder="PASS" required>
+            <button type="button" class="btn btn_lg btn_primary" onclick="delete_comment()">Delete</button>
+        </div>
+    </div>
+</div>
 
 <div class="page-content">
     <div class="div">

@@ -1,7 +1,9 @@
 var albumBucketName = "---------------------";
 var bucketRegion = "-------------------------";
 var IdentityPoolId = "-----------------------";
- 
+var boardId = 'jc';
+var tableName = 'simple_board';
+
 $(document).ready(function(){
     subscribeCommentSubmitButtonUpdate();
 });
@@ -18,7 +20,7 @@ var s3 = new AWS.S3({
   params: { Bucket: albumBucketName }
 });
  
-const comment_url = "https://9y9bmv0gkh.execute-api.us-east-1.amazonaws.com/simple_baord/article_resource";
+const comment_url = "https://ar8qo8k2ej.execute-api.us-east-1.amazonaws.com/default_stage/comment_resource";
 
 function createNode(element, className) {
     var node = document.createElement(element);
@@ -33,14 +35,14 @@ function append(parent, el) {
 var commentCount = 0;
 function loadBoardCount() {
     var newCommentCount = 0;
-    fetch(comment_url + "?TableName=simple_board&id=jc&count=true", {
+    fetch(comment_url + "?TableName=" + tableName + "&board_id=jc&Count", {
         method: "GET",
         headers: {
             'Accept': 'application/json'
         }
     }).then(resp => resp.json())
     .then(function(data){
-        newCommentCount = data.ScannedCount;
+        newCommentCount = data.Count;
         if (newCommentCount == commentCount)
         {
             redrawBoard();
@@ -54,7 +56,7 @@ function loadBoardCount() {
 
 let items = [];
 function loadBoard(scrollToLast = false) {
-    fetch(comment_url + "?TableName=simple_board&id=jc", {
+    fetch(comment_url + "?TableName=" + tableName + "&board_id=jc", {
         method: "GET",
         headers: {
             'Accept': 'application/json'
@@ -77,30 +79,31 @@ function redrawBoard(scrollToLast = false) {
         let div1 = createNode('div', 'comment-item-row');
         append(li, div1);
 
-        let name = createNode('div', 'comment-item-name');
-        if (item.name == '')
-            item.name = '(empty)';
-        name.innerHTML = item.name;
-        append(div1, name);
+        let board_name = createNode('div', 'comment-item-name');
+        if (item.board_name == '')
+            item.board_name = '(empty)';
+        board_name.innerHTML = item.board_name;
+        append(div1, board_name);
 
-        let date = createNode('div', 'comment-item-date');
-        if (item.date == '')
-            item.date = '(empty)';
-        date.innerHTML = timeForToday(item.date);
-        append(div1, date);
+        let board_time = createNode('div', 'comment-item-date');
+        if (item.board_time == '')
+            item.board_time = '(empty)';
+        board_time.innerHTML = timeForToday(item.board_time);
+        append(div1, board_time);
 
         let del = createNode('div', 'comment-item-delete');
-        del.innerHTML = '<a href="#">Del</a>'
+        del.innerHTML = '<a href="javascript:void(0)" onclick="layout_delete_comment_on(\'' + item.board_time + '\',\'' + item.board_name + '\');">Del</a>'
+        //del.innerHTML = '<a href="javascript:void(0)" onclick="delete_to_db(\'' + item.board_time + '\',\'' + item.board_name + '\',\'' + item.board_pass + '\');">Del</a>'
         append(div1, del);
 
         let div2 = createNode('div', 'comment-item-row');
         append(li, div2);
 
-        let content = createNode('div', 'comment-item-content');
-        if (item.content == '')
-            item.content = '(empty)';
-        content.innerHTML = item.content;
-        append(div2, content);
+        let board_content = createNode('div', 'comment-item-content');
+        if (item.board_content == '')
+            item.board_content = '(empty)';
+        board_content.innerHTML = item.board_content;
+        append(div2, board_content);
 
         append(elem, li);
     });
@@ -110,20 +113,56 @@ function redrawBoard(scrollToLast = false) {
     }
 }
 
+function delete_to_db(createdTime, name, pass) {
+    if (createdTime == '' || name == '' || pass == '')
+        return;
+
+    var item = {
+        'board_id': boardId,
+        'board_time': createdTime,
+        'board_name': name,
+        'board_pass': pass,
+    }
+        
+    fetch(comment_url, {
+        method: "DELETE",
+        headers: {
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            "TableName": tableName,
+            "Item": item
+        })
+    }).then(resp => {
+        if (resp.status != 200)
+        {
+            console.log(resp.json());
+            alert('Please check your password.');
+        }
+        else
+        {
+            layout_off();
+            loadBoard(true);
+        }
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
 
 function upload_to_db() {
     var article_name = document.querySelector("#input-comment-name");
     var article_pass = document.querySelector("#input-comment-pass");
     var article_content = document.querySelector("#input-comment-content");
+    if (article_name == '' || article_pass == '' || article_content == '')
+        return;
  
     var item = {
-        'id': 'jc',
-        'name': article_name.value,
-        'pass': article_pass.value,
-        'content': article_content.value
+        'board_id': boardId,
+        'board_name': article_name.value,
+        'board_pass': article_pass.value,
+        'board_content': article_content.value
     }
-    if (item.id == '' || item.name == '' || item.pass == '' || item.content == '')
-        return;
     article_name.value = "";
     article_pass.value = "";
     article_content.value = "";
@@ -134,15 +173,23 @@ function upload_to_db() {
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            "TableName": "simple_board",
+            "TableName": tableName,
             "Item": item
         })
     }).then(resp => {
-        console.log(resp);
-        loadBoard(true);
-        document.querySelector("#input-comment-submit").disabled = true;
+        if (resp.status != 200)
+        {
+            console.log(resp.json());
+        }
+        else
+        {
+            loadBoard(true);
+            document.querySelector("#input-comment-submit").disabled = true;
+        }
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        console.log(err);
+    })
 }
  
 function add_article_with_photo(albumName) {
