@@ -1,7 +1,7 @@
 .snowflake {
   --size: 1vw;
-  width: var(--size);
-  height: var(--size);
+  width: 0.4vw;
+  height: 0.4vw;
   background: rgb(218, 201, 215);
   border-radius: 50%;
   position: absolute;
@@ -10,10 +10,10 @@
 @keyframes snowfall {
   0% {
     transform: translate3d(var(--left-ini), 0, 0);
- }
+  }
   100% {
-    transform: translate3d(var(--left-end), 110vh, 0);
- }
+    transform: translate3d(-10vw, 110vh, 0);
+  }
 }
 .snowflake:nth-child(1) {
   --size: 1vw;
