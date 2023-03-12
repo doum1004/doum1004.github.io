@@ -11,7 +11,7 @@ function updateGallery() {
 }
 
 function loadGallery(){
-  var len = 26;//How many you want to load.
+  var len = 27;//How many you want to load.
   var pics = [];
   for(var i=0;i<=len;i++){
     var src = './images/pic'+i+'.jpg';
