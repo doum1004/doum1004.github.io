@@ -16,6 +16,12 @@ function hideInvitedElements() {
         if (invited == null)
             item.style.display = 'none';
     });
+
+    const congracts = urlParams.get('congracts');
+    document.querySelectorAll("[hide_in_congracts]").forEach(function (item) {
+        if (congracts != null)
+            item.style.display = 'none';
+    });
 }
 
 // Smooth scroll for links with hashes
