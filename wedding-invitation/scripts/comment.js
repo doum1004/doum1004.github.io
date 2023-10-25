@@ -262,12 +262,21 @@ function subscribeCommentSubmitButtonUpdate() {
     const inputContent = document.querySelector('#input-comment-content');
     const inputSubmit = document.querySelector('#input-comment-submit');
 
-    inputName.addEventListener('keyup', activeEvent);
-    inputPass.addEventListener('keyup', activeEvent);
-    inputContent.addEventListener('keyup', activeEvent);
+    if (inputName)
+        inputName.addEventListener('keyup', activeEvent);
+    if (inputPass)
+        inputPass.addEventListener('keyup', activeEvent);
+    if (inputContent)
+        inputContent.addEventListener('keyup', activeEvent);
 
     function activeEvent() {
-        switch(!(inputName.value && inputPass.value && inputContent.value)){
+        if (!inputSubmit)
+            return;
+        
+        hasInputNameValue = inputName && inputName.value;
+        hasInputPassValue = inputPass && inputPass.value;
+        hasInputContentValue = inputContent && inputContent.value;
+        switch(!(hasInputNameValue && hasInputPassValue && hasInputContentValue)){
             case true : inputSubmit.disabled = true; break;
             case false : inputSubmit.disabled = false; break
         }
