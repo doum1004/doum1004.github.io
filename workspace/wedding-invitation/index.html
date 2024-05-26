@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Jehyeok & Chi</title>
+    <meta content="이제혁과 장츠의 결혼식 축하해주세요~!" name="description"/>
+    <meta property="og:image" content="images/meta-pic.jpg">
+    <link href="images/favicon/favicon-128x128.png" rel="apple-touch-icon" sizes="128x128">
+    <link href="images/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
+    <link href="styles/snow.css" rel="stylesheet">
+    <link href="css/ekko-lightbox.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Gamja+Flower|Gugi|Noto+Serif+KR|Stylish|Sunflower:300" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-2.2.1.js"></script>
+    <script async src="http://www.instagram.com/embed.js" type="text/javascript"></script>
+    <script id="dsq-count-scr" src="http://jc-wedding-2.disqus.com/count.js" async></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css'>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4YTN9DMNSH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-4YTN9DMNSH');
+    </script>
+
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
+    <script src="scripts/comment.js"></script>
+
+    <script src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function play_stop_music() {
+            let player = document.getElementById('player')
+            if (player.paused == true) {
+                player.play();
+            }
+            else {
+                player.pause();
+            }
+        }
+
+        function copyToClipBoard(id) {
+            var content = document.getElementById(id);
+            content.select();
+            content.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(content.value);
+            content.select();
+        }
+
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                  tmp = item.split("=");
+                  if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+        let comment_board_time = '';
+        let comment_board_name = '';
+        function layout_delete_comment_on(board_time, board_name) {
+            comment_board_time = board_time;
+            comment_board_name = board_name;
+
+            var inputPass = document.querySelector('#input-comment-delete-pass');
+            inputPass.value = "";
+            document.getElementById("overlay").style.display = "block";
+            inputPass.select();
+            inputPass.setSelectionRange(0, 99999);
+            inputPass.select();
+        }
+            
+        function layout_off() {
+            document.getElementById("input-comment-delete-pass").value = "";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function delete_comment() {
+            var inputPass = document.querySelector('#input-comment-delete-pass');
+            delete_to_db(comment_board_time, comment_board_name, inputPass.value);
+            inputPass.select();
+            inputPass.setSelectionRange(0, 99999);
+            inputPass.select();
+        }
+
+        function add_delete_input_listener() {
+            var inputButton = document.querySelector('#input-comment-delete-pass');
+            inputButton.addEventListener("keypress", function(event) {
+                // If the user presses the "Enter" key on the keyboard
+                if (event.key === "Enter") {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    document.getElementById("input-comment-delete-button").click();
+                }
+            });
+        }
+
+        function submitToAPI(e){
+                e.preventDefault();
+                upload_to_db();
+             }
+
+        function loadGitRepoReadME() {
+            var comments = $("#git_comments");
+            if (comments == null)
+                return;
+
+            function getText(){
+                var result = null;
+                $.ajax( { url: "https://raw.githubusercontent.com/AndersonChoi/wedding-card/master/README.md",
+                //$.ajax( { url: "https://raw.githubusercontent.com/doum1004/doum1004.github.io/wedding-invitation/master/README.md",
+                        type: 'get',
+                        dataType: 'html',
+                        async: false,
+                        success: function(data) { result = data; }
+                    }
+                );
+                FileReady = true;
+                return result;
+            }
+            var markdown_source = getText();
+            var comment_contents = markdown_source.split("축하의 말")[1];
+
+            var md = new Remarkable();
+            comments.append(md.render(comment_contents));
+        }
+
+        $(document).ready(function() {
+            loadBoardCount();
+            //setInterval(redrawBoard, 60000);
+            loadGitRepoReadME();
+            add_delete_input_listener();
+        });
+    </script>
+</head>
+
+<body id="top">
+<header></header>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v3.2"></script>
+
+<div id="overlay" onclick="layout_off()">
+    <div id="overlay-item" onclick="event.stopPropagation()">
+        <div id="overlay-item-row">
+            <input type="password" id="input-comment-delete-pass" placeholder="PASS" required>
+            <button type="button" id="input-comment-delete-button" class="btn btn_lg btn_primary" onclick="delete_comment()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="div">
+        <div class="ww-home-page" id="home">
+            <div>
+                <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+                <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+                <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+                <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+                <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+                <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+                <div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div><div class="snowflake"></div>
+            </div>
+            <div class="ww-wedding-announcement d-flex align-items-center justify-content-start">
+                <div class="container ww-announcement-container">
+                    <p class="ww-couple-name ww-title" style="font-size:3.5em" data-i18n-key="home-title"></p>
+                    <p class="h2 mt-5 ww-title" style="font-family: 'Gugi', cursive; font-size:1.3em" data-i18n-key="home-subtitle"></p>
+                    <p class="h2 mt-5 ww-title"
+                       style="font-family: 'Noto Serif KR', serif; font-size:1.0em; letter-spacing:-1px">
+                        <b style="font-size:1.4em;" data-i18n-key="home-date"></b>
+                        <br>
+                        <p data-i18n-key="home-location"></p>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="ww-nav-bar sticky-top bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container">
+                    <button aria-controls="ww-navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                            class="navbar-toggler"
+                            data-target="#ww-navbarNav" data-toggle="collapse" type="button">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <select data-i18n-switcher class="locale-switcher">
+                        <option value="ko">Korean (한국어)</option>
+                        <option value="zh">Chinese (中文)</option>
+                        <option value="en">English</option>
+                    </select>
+                    
+                    <div class="collapse navbar-collapse text-uppercase" id="ww-navbarNav">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="#home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="#couple">Couple</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="#events">Events</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="#gallery">Gallery</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="#comment">Comment</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="ww-section" id="couple">
+            <div class="container">
+                <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="couple-title"></h2>
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <div class="mt-3">
+                            <div style="font-family: 'Noto Serif KR', serif; margin-bottom: 5px;" data-i18n-key="couple-groom-family"></div>
+                            <h3 class="h2 ww-title" style="font-family: 'Sunflower', sans-serif; font-size:1.5em" data-i18n-key="couple-groom"></h3>
+                            <img alt="Groom" class="img-fluid" src="images/groom.jpg"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mt-3">
+                            <div style="font-family: 'Noto Serif KR', serif; margin-bottom: 5px;" data-i18n-key="couple-bride-family"></div>
+                            <h3 class="h2 ww-title" style="font-family: 'Sunflower', sans-serif; font-size:1.5em" data-i18n-key="couple-bride"></h3>
+                            <img alt="Bride" class="img-fluid" src="images/bride.jpg"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ww-section bg-light" id="events">
+            <div class="container ww-wedding-event">
+                <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="events-title"></h2>
+                <div class="col text-center mb-5">
+                    <h6 class="text-center" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="events-content1"></h6>
+                    <br>
+                    <h5 class="h5 text-left" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="events-content2"></h5>
+                    <br>
+                </div>
+                <div invited>
+                    <div class="row">
+                        <div class="col-md-7 col-sm-12">
+                            <div class="my-3">
+                                <div class="h4" data-i18n-key="events-event1"></div>
+                                <ul>
+                                    <li>
+                                        <i class="text-muted fas fa-map-marker-alt"></i>
+                                        <span class="pl-2 text-muted" data-i18n-key="events-event1-location"></span>
+                                    </li>
+                                    <li class="pt-2">
+                                        <i class="text-muted far fa-calendar-alt"></i>
+                                        <span class="pl-2 text-muted" data-i18n-key="home-date"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-12">
+                            <div class="my-3">
+                                <img alt="Wedding Party" class="img-fluid" src="images/wedding-location-pic.jpeg"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 col-sm-12">
+                            <div class="my-3">
+                                <div class="h4" data-i18n-key="events-event2"></div>
+                                <ul>
+                                    <li>
+                                        <i class="text-muted fas fa-map-marker-alt "></i>
+                                        <span class="pl-2 text-muted" data-i18n-key="events-event2-location"></span>
+                                    </li>
+                                    <li class="pt-2">
+                                        <i class="text-muted far fa-calendar-alt "></i>
+                                        <span class="pl-2 text-muted" data-i18n-key="events-event2-date"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-12">
+                            <div class="my-3"><img alt="Reception" class="img-fluid" src="images/wedding-reception-pic.jpeg"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ww-section" id="gallery">
+            <div class="ww-photo-gallery">
+                <div class="container">
+                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="gallery-title"></h2>
+                    <div class="ww-gallery">
+                        <div class="card-columns">
+                            <section id="grid-container" class="transitions-enabled fluid masonry js-masonry grid">
+                                <article class="beach people sea">
+                                    <img src="https://cdn2.hubspot.net/hub/322787/hubfs/MYCHEFCOM/hackathon/photos-gallery/beach1.jpg" class="img-responsive" />
+                                </article>
+                            </section>
+                            <!-- <div class="card" data-groups="[&quot;party&quot;,&quot;wedding&quot;]">
+                                <a data-gallery="ww-gallery" data-toggle="lightbox">
+                                    <img alt="Gallery Pic 2" class="img-fluid" src="images/pic1.jpg"/>
+                                </a>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="ww-section parallax-window  text-white" data-parallax="scroll" data-image-src="images/sub-background.jpg" id="gifts" style="height: 500px;">
+            <div class="ww-gift-section" style="background-color: #00000066; padding-top: 25px;">
+                <h4 class="h1 text-center pb-3 ww-title" style="font-family: 'Gugi', cursive; font-size:1.8em" data-i18n-key="gallery-content1">우리 둘</h4>
+                <div class="col text-center mb-5">
+                    <h6 style="font-family: 'Noto Serif KR', serif; font-size:1.5em" data-i18n-key="gallery-content2">사랑하며 살겠습니다.</h6>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="ww-section bg-light" id="video">
+            <div class="container ww-wedding-event">
+                <iframe width="100%" height="315" frameborder="0" allowfullscreen src="https://www.youtube.com/embed/_pLJi7vsmaU"></iframe>
+            </div>
+        </div> -->
+
+        <div class="ww-section ww-rsvp-detail" id="map" invited>
+            <div class="container">
+                <div class="col text-center">
+                    <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="map-title"></h2>
+                    <div>
+                        <h5 style="font-family: 'Noto Serif KR', serif;" data-i18n-key="map-location"></h5>
+                        <h6 style="font-family: 'Noto Serif KR', serif;" data-i18n-key="map-address"></h6>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="my-3 text-center">
+                            <a href="https://naver.me/FjojdsDV">
+                                <img alt="naver-map" class="map-icon" id="naver-map"
+                                     src="images/map/naver-map.png"/>
+                            </a>
+                            <a href="http://kko.to/qVGkwNU5C_">
+                                <img alt="kakao-map" class="map-icon" id="kakao-map"
+                                     src="images/map/kakao-map.png"/>
+                            </a>
+                            <a href="https://goo.gl/maps/Ltz2uZR72onteWZm7">
+                                <img alt="google-map" class="map-icon" id="google-map"
+                                     src="images/map/google-map.png"/>
+                            </a>
+                        </div>
+                        <div class="col text-center">
+                            <a href="http://kko.to/kp6X7CL8Uu">
+                            <label style="font-family: 'Noto Serif KR', serif; font-size: 15px;" data-i18n-key="map-transportation"></label>
+                            </a>
+                        </div>
+                        <div class="my-3">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3336.8985922718944!2d126.41564412695314!3d33.24295999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x350c5ab751a16203%3A0x715ad1f7d971803c!2z7JSo7JeQ7Iqk7Zi47YWU7JWk66as7KGw7Yq4!5e0!3m2!1sko!2skr!4v1673141716827!5m2!1sko!2skr" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="ww-section bg-light" id="donation" hide_in_congracts koonly>
+            <div class="ww-photo-gallery">
+                <div class="container">
+                    <div class="col text-center">
+                        <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="donation-title"></h2>
+                        <br>
+                        <div class="css-account">
+                            <input id="account-1" type="text" value="대구은행 02107192179 지은정" readonly>
+                            <button onclick="copyToClipBoard('account-1')">복사</button>
+                        </div>
+                        <div class="css-account">
+                            <input id="account-2" type="text" value="토스뱅크 100001110431 이제혁" readonly>
+                            <button onclick="copyToClipBoard('account-2')">복사</button>
+                        </div>
+                        <div class="css-account">
+                            <a id="link-kakaopay" href="https://qr.kakaopay.com/Ej8FONCGy" target="_blank"><img alt="카카오페이 송금" src="images/logo-kakaopay.png" style="width: 105px"></a>
+                            <a id="link-toss" href="supertoss://send?amount=0&bank=%ED%86%A0%EC%8A%A4%EB%B1%85%ED%81%AC&accountNo=100001110431&origin=qr" target="_blank"><img alt="토스 송금" src="images/logo-toss-blue.png" style="width: 130px"></a>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <p class="h2 mt-5 " style="font-family: 'Noto Serif KR', serif; font-size:1.3em;" data-i18n-key="donation-content"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ww-section" id="comment">
+            <div class="ww-photo-gallery">
+                <div class="container">
+                    <div class="col text-center">
+                        <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;" data-i18n-key="comment-title"></h2><br>
+
+                        <!-- <div id="disqus_thread"></div>
+                        <script>
+                            /**
+                            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                            /*
+                            var disqus_config = function () {
+                            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+                            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                            };
+                            */
+                            (function() { // DON'T EDIT BELOW THIS LINE
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://jc-wedding-2.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                            })();
+                        </script>
+                        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript> -->
+
+                        <!-- <script src="https://utteranc.es/client.js"
+                                repo="doum1004/doum1004.github.io"
+                                issue-term="pathname"
+                                label="utterances"
+                                theme="github-light"
+                                crossorigin="anonymous"
+                                async>
+                        </script> -->
+
+                        <!-- <script src="https://giscus.app/client.js"
+                                data-repo="doum1004/doum1004.github.io"
+                                data-repo-id="MDEwOlJlcG9zaXRvcnkyODIxNDUxNTQ="
+                                data-category="[ENTER CATEGORY NAME HERE]"
+                                data-category-id="[ENTER CATEGORY ID HERE]"
+                                data-mapping="pathname"
+                                data-strict="0"
+                                data-reactions-enabled="1"
+                                data-emit-metadata="0"
+                                data-input-position="bottom"
+                                data-theme="preferred_color_scheme"
+                                data-lang="ko"
+                                crossorigin="anonymous"
+                                async>
+                        </script> -->
+
+                        <!-- <div class="comment-item">
+                            <div class="comment-item-row">
+                                <div class="comment-item-name">
+                                    이름
+                                </div>
+                                <div class="comment-item-date">
+                                    날짜
+                                </div>
+                            </div>
+                            <div class="comment-item-row">
+                                <div class="comment-item-content">
+                                    content
+                                </div>
+                            </div>
+                        </div>
+                        <br> -->
+                        <div class="comment-table">
+                            <div class="comment-table-row1">
+                                <input type="text" id="input-comment-name" placeholder="NAME" required>
+                                <input type="password" id="input-comment-pass" placeholder="PASS" required>
+                                <button type="button" id="input-comment-submit" class="btn btn_lg btn_primary" onclick="submitToAPI(event)" disabled>Submit</button>
+                            </div>
+                            <br>
+                            <div>
+                                <textarea type="text" id="input-comment-content" placeholder="Add a message..." wrap="off" required></textarea>
+                            </div>
+                        </div>
+                        <div id="comment-list">
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn_lg btn_primary" onclick="loadBoardCount()">Refresh</button>
+                        <!-- <div id="git_comments"></div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ww-section bg-light">
+            <div class="ww-photo-gallery">
+                <div class="container">
+                    <div class="col text-center">
+                        <a href="https://hits.sh/doum1004.github.io/wedding-invitation/"><img alt="Hits" src="https://hits.sh/doum1004.github.io/wedding-invitation.svg?view=today-total&style=for-the-badge"/></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<footer></footer>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="js/aos.js"></script>
+<script src="js/parallax.min.js"></script>
+<script src="js/ekko-lightbox.min.js"></script>
+<script src="scripts/main.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js'></script>
+<script src="./scripts/photos.js"></script>
+<script src="scripts/translator.js"></script>
+
+<!-- <div class="bottom_right">
+    <i class="fa fa-arrow-up fa-2x" id="go-to-top"></i>
+</div> -->
+
+<div class="top_right">
+    <audio id="player" src="mus.mp3" autoplay loop></audio>
+    <div>
+        <i class="fa fa-music fa-2x" onclick="play_stop_music()"></i>
+    </div>
+</div>
+
+</body>
+</html>

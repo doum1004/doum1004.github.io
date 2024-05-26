@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Responsive Portfolio Gallery</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="button-group filters-button-group">
+    <button class="button is-checked" data-filter="*">all</button>
+    <button class="button" data-filter=".beach">beach</button>
+    <button class="button" data-filter=".bird">bird</button>
+    <button class="button" data-filter=".boat">boat</button>
+    <button class="button" data-filter=".lighthouse">lighthouse</button>
+    <button class="button" data-filter=".people">people</button>
+    <button class="button" data-filter=".rock">rock</button>
+    <button class="button" data-filter=".sea">sea</button>
+</div>
+
+<section id="grid-container" class="transitions-enabled fluid masonry js-masonry grid">
+    <article class="beach people sea">
+        <img src="https://cdn2.hubspot.net/hub/322787/hubfs/MYCHEFCOM/hackathon/photos-gallery/beach1.jpg" class="img-responsive" />
+    </article>
+</section>
+<!-- partial -->
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
+<script src='https://cdn2.hubspot.net/hub/322787/hub_generated/style_manager/1440007714979/custom/page/hack-a-thon-3/masonry.min.min.js'></script>
+<script src='https://cdn2.hubspot.net/hub/322787/hub_generated/style_manager/1440007849180/custom/page/hack-a-thon-3/isotope.min.js'></script>
+<script  src="./script.js"></script>
+
+</body>
+</html>
